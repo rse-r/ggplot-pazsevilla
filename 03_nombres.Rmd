@@ -8,8 +8,6 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-library(dplyr)
-library(ggplot2)
 ```
 
 
@@ -20,7 +18,10 @@ nombres <- datos::nombres
 1. Calculá cuantos bebés de cada sexo fueron llamados "Mary" o "Kerry". 
 
 ```{r}
-
+nombres |> 
+  filter(nombre == "Mary" | nombre == "Kerry") |>
+  group_by(nombre, sexo) |>
+  summarise(cantidad_bebes = sum(n))
 ```
 
 
@@ -28,20 +29,40 @@ nombres <- datos::nombres
 
 
 ```{r}
-
+nombres |> 
+  filter(nombre == "Mary") |>
+  group_by(sexo, anio) |> 
+  summarise(cantidad_bebes = sum(n)) |>
+  ggplot(aes(anio, cantidad_bebes)) +
+  geom_line(
+    aes(color = sexo)
+  )
 ```
 
 3. Repetí el gráfico anterior para el nombre "Kerry".
 
 ```{r}
-
+nombres |> 
+  filter(nombre == "Kerry") |>
+  group_by(sexo, anio) |> 
+  summarise(cantidad_bebes = sum(n)) |>
+  ggplot(aes(anio, cantidad_bebes)) +
+  geom_line(
+    aes(color = sexo)
+  )
 ```
 
 
-4. ¿Cuál fue la proporción máxima para cada sexo en cada año? Hacé un gráfico mostrando la evolución de eta variable. (podés calcular el máximo con `max(prop)`)
+4. ¿Cuál fue la proporción máxima para cada sexo en cada año? Hacé un gráfico mostrando la evolución de esta variable. (podés calcular el máximo con `max(prop)`)
 
 ```{r}
-
+nombres |>
+  group_by(sexo, anio) |>
+  summarise(proporcion_maxima = max(prop)) |>
+  ggplot(aes(anio,proporcion_maxima)) +
+  geom_line(
+    aes(color = sexo)
+  )
 ```
 
 
