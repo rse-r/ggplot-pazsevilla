@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 # En este bloque cargá los paquetes que vas a necesitar
-
+library(tidyverse)
 ```
 
 # Preparación
@@ -35,8 +35,10 @@ Además de escribir el código para generar el gráfico, escribí como mínimo u
 ¿Qué conclusión sacás?
 
 ```{r}
-ggplot(millas, aes(____, ____)) +
-  geom_____()
+ggplot(millas, aes(autopista, cilindros)) +
+  geom_point(
+    colour = "violet"
+  )
 ```
 
 
@@ -44,35 +46,42 @@ ggplot(millas, aes(____, ____)) +
 
 
 ```{r}
-
+ggplot(millas, aes(autopista, ciudad)) +
+  geom_point(
+    colour = "blue"
+  )
 ```
 
 
-3. ¿Qué pasa cuando haces un gráfico de  de "clase" versus "traccion"? ¿Por qué no es útil este gráfico?
+3. ¿Qué pasa cuando haces un gráfico de "clase" versus "traccion"? ¿Por qué no es útil este gráfico?
 
 ```{r}
-
+ggplot(millas, aes(clase, traccion)) +
+  geom_point(
+    colour = "green"
+  )
 ```
 
 
 4. En otro bloque, rehacé el gráfico de "autopista" versus "ciudad" pero ahora asigná la variable "tracción" al color de los puntos. 
 
 ```{r}
-
-```
-
-
-5. En otro bloque, rehacé el gráfico de "autopista" versus "ciudad" pero ahora asigná la variable "tracción" al color de los puntos. 
-
-```{r}
-
+millas |>
+  ggplot(aes(autopista, ciudad)) +
+  geom_point(
+   aes(color = traccion)
+  )
 ```
 
 
 5. ¿Qué ocurre si se asigna o mapea una estética a algo diferente del nombre de una variable, como `aes(color = cilindrada < 3)`?
 
 ```{r}
-
+millas |>
+  ggplot(aes(autopista, ciudad)) +
+  geom_point(
+   aes(color = cilindrada < 3)
+  )
 ```
 
 
@@ -84,6 +93,10 @@ ggplot(millas, aes(____, ____)) +
 ¿Qué ventajas y desventajas tiene este geom?
 
 ```{r}
-
+millas |>
+  ggplot(aes(autopista, ciudad)) +
+  geom_jitter( #el jitter mueve los puntos para evitar la sobreposicion de los mismos
+   aes(color = cilindrada < 3)
+  )
 ```
 
