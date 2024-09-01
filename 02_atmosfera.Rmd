@@ -12,35 +12,44 @@ library(dplyr)
 library(ggplot2)
 ```
 
-
 ```{r carga-datos}
 atmosfera <- datos::atmosfera
 ```
 
-
-1. Graficá la relación entre la presión y la temperatura. 
-¿Es una relación lineal más o menos limpia o hay otras cosas “raras”?
+1.  Graficá la relación entre la presión y la temperatura. ¿Es una relación lineal más o menos limpia o hay otras cosas “raras”?
 
 ```{r}
-
+atmosfera |>
+  ggplot(aes(presion, temperatura)) +
+  geom_point(
+    colour = "grey"
+  )
 ```
 
-
-2. Calculá la temperatura media de cada mes y visualizalo en un gráfico de líneas.(Es decir, el ciclo anual promedio de temperatura). ¿Cómo describirías el ciclo anual en pocas palabras?
+2.  Calculá la temperatura media de cada mes y visualizalo en un gráfico de líneas.(Es decir, el ciclo anual promedio de temperatura). ¿Cómo describirías el ciclo anual en pocas palabras?
 
 ```{r}
-
+atmosfera |>
+  group_by(mes) |>
+  summarise(temperatura_media = mean(temperatura)) |>
+  ggplot(aes(mes, temperatura_media)) +
+  geom_line(
+    colour = "magenta",
+    linewidth = 2
+  )
 ```
 
-
-3. Calculá lo mismo pero para cada hemisferio. Graficalo con una línea de distinto color para cada hemisferio. 
-(Ayudas: La función sign() devuelve el signo de una variable; en el hemisferio sur la latitud es negativa y en el hemisferio norte, positiva. 
-Acordate del tema de los grupos y las líneas.)
+3.  Calculá lo mismo pero para cada hemisferio. Graficalo con una línea de distinto color para cada hemisferio. (Ayudas: La función sign() devuelve el signo de una variable; en el hemisferio sur la latitud es negativa y en el hemisferio norte, positiva. Acordate del tema de los grupos y las líneas.)
 
 ¿Cómo cambia tu descripción del ciclo anual ahora?
 
 ```{r}
-
+atmosfera |> 
+  group_by(mes, hemisferio = factor(sign(latitud))) |>
+  summarise(temperatura_media = mean(temperatura)) |>
+  ggplot(aes(mes, temperatura_media)) +
+  geom_line(
+    aes(color = hemisferio),
+    linewidth = 2
+  )
 ```
-
-
